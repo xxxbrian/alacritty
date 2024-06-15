@@ -11,7 +11,7 @@ packages:
   - scdoc
 
 sources:
-  - https://github.com/alacritty/alacritty
+  - https://github.com/xxxbrian/alacritty
 
 environment:
   PATH: /home/build/.cargo/bin:/usr/bin/

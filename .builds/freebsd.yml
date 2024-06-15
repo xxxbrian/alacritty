@@ -11,7 +11,7 @@ packages:
   - x11/libxkbcommon
 
 sources:
-  - https://github.com/alacritty/alacritty
+  - https://github.com/xxxbrian/alacritty
 
 environment:
   PATH: /home/build/.cargo/bin:/bin:/usr/bin:/usr/local/bin
