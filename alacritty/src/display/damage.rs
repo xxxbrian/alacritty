@@ -215,8 +215,8 @@ impl<'a> RenderDamageIterator<'a> {
     #[inline]
     fn rect_for_line(&self, line_damage: LineDamageBounds) -> Rect {
         let size_info = &self.size_info;
-        let y_top = size_info.height() - size_info.padding_y();
-        let x = size_info.padding_x() + line_damage.left as u32 * size_info.cell_width();
+        let y_top = size_info.height() - size_info.padding_top();
+        let x = size_info.padding_left() + line_damage.left as u32 * size_info.cell_width();
         let y = y_top - (line_damage.line + 1) as u32 * size_info.cell_height();
         let width = (line_damage.right - line_damage.left + 1) as u32 * size_info.cell_width();
         Rect::new(x as i32, y as i32, width as i32, size_info.cell_height() as i32)
@@ -304,6 +304,8 @@ mod tests {
             cell_size as f32,
             2.,
             2.,
+            2.,
+            2.,
             true,
         )
         .into();
@@ -343,7 +345,7 @@ mod tests {
         let y = 40;
         let height = 5;
         let width = 10;
-        let size_info = SizeInfo::new(viewport_height, viewport_height, 5., 5., 0., 0., true);
+        let size_info = SizeInfo::new(viewport_height, viewport_height, 5., 5., 0., 0., 0., 0., true);
         frame_damage.add_viewport_rect(&size_info, x, y, width, height);
         assert_eq!(frame_damage.rects[0], Rect {
             x,

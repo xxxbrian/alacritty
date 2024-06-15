@@ -158,6 +158,18 @@ pub struct SizeInfo<T = f32> {
     /// Vertical window padding.
     padding_y: T,
 
+    // Left window padding.
+    padding_left: T,
+
+    // Right window padding.
+    padding_right: T,
+
+    /// Top window padding.
+    padding_top: T,
+
+    /// Bottom window padding.
+    padding_bottom: T,
+
     /// Number of lines in the viewport.
     screen_lines: usize,
 
@@ -174,6 +186,10 @@ impl From<SizeInfo<f32>> for SizeInfo<u32> {
             cell_height: size_info.cell_height as u32,
             padding_x: size_info.padding_x as u32,
             padding_y: size_info.padding_y as u32,
+            padding_left: size_info.padding_left as u32,
+            padding_right: size_info.padding_right as u32,
+            padding_top: size_info.padding_top as u32,
+            padding_bottom: size_info.padding_bottom as u32,
             screen_lines: size_info.screen_lines,
             columns: size_info.screen_lines,
         }
@@ -221,6 +237,26 @@ impl<T: Clone + Copy> SizeInfo<T> {
     pub fn padding_y(&self) -> T {
         self.padding_y
     }
+
+    #[inline]
+    pub fn padding_left(&self) -> T {
+        self.padding_left
+    }
+
+    #[inline]
+    pub fn padding_right(&self) -> T {
+        self.padding_right
+    }
+
+    #[inline]
+    pub fn padding_top(&self) -> T {
+        self.padding_top
+    }
+
+    #[inline]
+    pub fn padding_bottom(&self) -> T {
+        self.padding_bottom
+    }
 }
 
 impl SizeInfo<f32> {
@@ -230,14 +266,20 @@ impl SizeInfo<f32> {
         height: f32,
         cell_width: f32,
         cell_height: f32,
-        mut padding_x: f32,
-        mut padding_y: f32,
+        padding_left: f32,
+        padding_right: f32,
+        padding_top: f32,
+        padding_bottom: f32,
         dynamic_padding: bool,
     ) -> SizeInfo {
-        if dynamic_padding {
-            padding_x = Self::dynamic_padding(padding_x.floor(), width, cell_width);
-            padding_y = Self::dynamic_padding(padding_y.floor(), height, cell_height);
-        }
+        let mut padding_x = (padding_left + padding_right) / 2.;
+        let mut padding_y = (padding_top + padding_bottom) / 2.;
+
+        // TODO: Reintroduce dynamic padding.
+        // if dynamic_padding {
+        //     padding_x = Self::dynamic_padding(padding_x.floor(), width, cell_width);
+        //     padding_y = Self::dynamic_padding(padding_y.floor(), height, cell_height);
+        // }
 
         let lines = (height - 2. * padding_y) / cell_height;
         let screen_lines = cmp::max(lines as usize, MIN_SCREEN_LINES);
@@ -250,8 +292,12 @@ impl SizeInfo<f32> {
             height,
             cell_width,
             cell_height,
-            padding_x: padding_x.floor(),
-            padding_y: padding_y.floor(),
+            padding_x,
+            padding_y,
+            padding_left,
+            padding_right,
+            padding_top,
+            padding_bottom,
             screen_lines,
             columns,
         }
@@ -447,6 +493,8 @@ impl Display {
             cell_height,
             padding.0,
             padding.1,
+            padding.2,
+            padding.3,
             config.window.dynamic_padding && config.window.dimensions().is_none(),
         );
 
@@ -641,6 +689,8 @@ impl Display {
             cell_height,
             padding.0,
             padding.1,
+            padding.2,
+            padding.3,
             config.window.dynamic_padding,
         );
 
