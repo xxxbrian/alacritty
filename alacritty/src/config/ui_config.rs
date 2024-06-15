@@ -299,6 +299,33 @@ pub struct Delta<T: Default> {
     pub y: T,
 }
 
+#[derive(ConfigDeserialize, Clone, Copy, Debug, PartialEq)]
+pub struct Padding {
+    pub top: u8,
+    pub right: u8,
+    pub bottom: u8,
+    pub left: u8,
+    #[config(deprecated = "Config `padding.x` and `padding.y` are deprecated. Please use \
+                        `top|right|bottom|left` instead")]
+    x: Option<u8>,
+    #[config(deprecated = "Config `padding.x` and `padding.y` are deprecated. Please use \
+                        `top|right|bottom|left` instead")]
+    y: Option<u8>,
+}
+
+impl Default for Padding {
+    fn default() -> Padding {
+        Padding {
+            top: 2,
+            right: 2,
+            bottom: 2,
+            left: 2,
+            x: None,
+            y: None,
+        }
+    }
+}
+
 /// Regex terminal hints.
 #[derive(ConfigDeserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Hints {

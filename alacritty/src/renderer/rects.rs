@@ -146,8 +146,8 @@ impl RenderLine {
         }
 
         RenderRect::new(
-            start_x + size.padding_x(),
-            y + size.padding_y(),
+            start_x + size.padding_left(),
+            y + size.padding_top(),
             width,
             thickness,
             color,
