@@ -7,7 +7,7 @@
   <key>CFBundleExecutable</key>
   <string>alacritty</string>
   <key>CFBundleIdentifier</key>
-  <string>org.alacritty</string>
+  <string>xxxbrian.alacritty</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundleName</key>
