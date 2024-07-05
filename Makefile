@@ -57,7 +57,7 @@ $(APP_NAME)-%: $(TARGET)-%
 	@cp -fp $(COMPLETIONS) $(APP_COMPLETIONS_DIR)
 	@touch -r "$(APP_BINARY)" "$(APP_DIR)/$(APP_NAME)"
 	@codesign --remove-signature "$(APP_DIR)/$(APP_NAME)"
-	@codesign --force --deep --sign - "$(APP_DIR)/$(APP_NAME)"
+	@codesign --force --deep --sign "Developer ID Application: Bojin Li (7N7Y43VZ4J)" "$(APP_DIR)/$(APP_NAME)"
 	@echo "Created '$(APP_NAME)' in '$(APP_DIR)'"
 
 dmg: $(DMG_NAME)-native ## Create an Alacritty.dmg
