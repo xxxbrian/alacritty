@@ -10,6 +10,10 @@ Notable changes to the `alacritty_terminal` crate are documented in its
 
 ## 0.14.0-dev
 
+### Added
+
+- Support relative path imports from config files
+
 ### Changed
 
 - Pressing `Alt` with unicode input will now add `ESC` like for ASCII input
@@ -27,6 +31,7 @@ Notable changes to the `alacritty_terminal` crate are documented in its
 - Leaking FDs when closing windows on Unix systems
 - Config emitting errors for nonexistent import paths
 - Kitty keyboard protocol reporting shifted key codes
+- Broken search with words broken across line boundary on the first character
 
 ## 0.13.2
 
