@@ -73,17 +73,6 @@ $(DMG_NAME)-%: $(APP_NAME)-%
 		-ov -format UDZO
 	@echo "Packed '$(APP_NAME)' in '$(APP_DIR)'"
 
-dmg-universal-exist:
-$(DMG_NAME)-%: $(APP_NAME)-%
-	@echo "Packing disk image..."
-	@ln -sf /Applications $(DMG_DIR)/Applications
-	@hdiutil create $(DMG_DIR)/$(DMG_NAME) \
-		-volname "Alacritty" \
-		-fs HFS+ \
-		-srcfolder $(APP_DIR) \
-		-ov -format UDZO
-	@echo "Packed '$(APP_NAME)' in '$(APP_DIR)'"
-
 install: $(INSTALL)-native ## Mount disk image
 install-universal: $(INSTALL)-native ## Mount universal disk image
 $(INSTALL)-%: $(DMG_NAME)-%
