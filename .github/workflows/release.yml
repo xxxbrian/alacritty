@@ -45,10 +45,24 @@ jobs:
         run: cargo test --release --target=x86_64-apple-darwin
       - name: Build ARM
         run: cargo build --release --target=aarch64-apple-darwin
-      - name: Make DMG
+      - name: Make Universal
         run: |
           security find-identity -v -p codesigning
-          make dmg-universal
+          make app-universal
+      - name: Notarize Release Build
+        uses: lando/notarize-action@v2
+        with:
+          product-path: "./target/release/osx/Alacritty.app"
+          appstore-connect-username: ${{ secrets.NOTARIZATION_USERNAME }}
+          appstore-connect-password: ${{ secrets.NOTARIZATION_PASSWORD }}
+          appstore-connect-team-id: 7N7Y43VZ4J
+          verbose: true
+      - name: Staple Release Build
+        uses: BoundfoxStudios/action-xcode-staple@v1
+        with:
+          product-path: "./target/release/osx/Alacritty.app"
+      - name: Make DMG
+        run: make dmg-universal-exist
       - name: Upload Application
         run: |
           mv ./target/release/osx/Alacritty.dmg ./Alacritty-${GITHUB_REF##*/}.dmg
