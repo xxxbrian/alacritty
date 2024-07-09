@@ -14,6 +14,7 @@ COMPLETIONS = $(COMPLETIONS_DIR)/_alacritty \
 
 APP_NAME = Alacritty.app
 APP_TEMPLATE = $(ASSETS_DIR)/osx/$(APP_NAME)
+APP_ENTITLEMENTS = $(ASSETS_DIR)/osx/macos-entitlement.plist
 APP_DIR = $(RELEASE_DIR)/osx
 APP_BINARY = $(RELEASE_DIR)/$(TARGET)
 APP_BINARY_DIR = $(APP_DIR)/$(APP_NAME)/Contents/MacOS
@@ -57,7 +58,7 @@ $(APP_NAME)-%: $(TARGET)-%
 	@cp -fp $(COMPLETIONS) $(APP_COMPLETIONS_DIR)
 	@touch -r "$(APP_BINARY)" "$(APP_DIR)/$(APP_NAME)"
 	@codesign --remove-signature "$(APP_DIR)/$(APP_NAME)"
-	@codesign --force --deep --sign "Developer ID Application: Bojin Li (7N7Y43VZ4J)" "$(APP_DIR)/$(APP_NAME)"
+	@codesign --force --deep --entitlements $(APP_ENTITLEMENTS) --options runtime --timestamp --sign "Developer ID Application: Bojin Li (7N7Y43VZ4J)" -v "$(APP_DIR)/$(APP_NAME)"
 	@echo "Created '$(APP_NAME)' in '$(APP_DIR)'"
 
 dmg: $(DMG_NAME)-native ## Create an Alacritty.dmg
