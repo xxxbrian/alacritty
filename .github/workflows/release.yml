@@ -69,7 +69,13 @@ jobs:
         with:
           product-path: "./target/release/osx/Alacritty.app"
       - name: Make DMG
-        run: make dmg-universal
+        run: |
+            ln -sf /Applications target/release/osx/Applications
+            hdiutil create target/release/osx/Alacritty.dmg \
+              -volname "Alacritty" \
+              -fs HFS+ \
+              -srcfolder target/release/osx \
+              -ov -format UDZO
       - name: Upload Application
         run: |
           mv ./target/release/osx/Alacritty.dmg ./Alacritty-${GITHUB_REF##*/}.dmg
