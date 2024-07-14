@@ -83,7 +83,7 @@ jobs:
             create-dmg 'target/release/osx/Alacritty.app' 'target/release/osx'
       - name: Upload Application
         run: |
-          mv ./target/release/osx/Alacritty.dmg ./Alacritty-${GITHUB_REF##*/}.dmg
+          mv ./target/release/osx/Alacritty*.dmg ./Alacritty-${GITHUB_REF##*/}.dmg
           ./.github/workflows/upload_asset.sh ./Alacritty-${GITHUB_REF##*/}.dmg $GITHUB_TOKEN
       - name: Clean up keychain
         if: ${{ always() }}
