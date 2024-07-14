@@ -56,18 +56,26 @@ jobs:
         run: |
           security find-identity -v -p codesigning
           make app-universal
-      - name: Notarize Release Build
-        uses: lando/notarize-action@v2
-        with:
-          product-path: "./target/release/osx/Alacritty.app"
-          appstore-connect-username: ${{ secrets.NOTARIZATION_USERNAME }}
-          appstore-connect-password: ${{ secrets.NOTARIZATION_PASSWORD }}
-          appstore-connect-team-id: 7N7Y43VZ4J
-          verbose: true
-      - name: Staple Release Build
-        uses: BoundfoxStudios/action-xcode-staple@v1
-        with:
-          product-path: "./target/release/osx/Alacritty.app"
+      - name: Sign Release Build
+        run: |
+          codesign --force --deep --entitlements "extra/osx/macos-entitlement.plist" --options runtime --timestamp --sign "Developer ID Application: Bojin Li (7N7Y43VZ4J)" -v "target/release/osx/Alacritty.app"
+      - name: "Notarize app bundle"
+        env:
+          PROD_MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.NOTARIZATION_USERNAME }}
+          PROD_MACOS_NOTARIZATION_TEAM_ID: 7N7Y43VZ4J
+          PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.NOTARIZATION_PASSWORD }}
+        run: |
+          echo "Create keychain profile"
+          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
+
+          echo "Creating temp notarization archive"
+          ditto -c -k --keepParent "target/release/osx/Alacritty.app" "notarization.zip"
+
+          echo "Notarize app"
+          xcrun notarytool submit "notarization.zip" --keychain-profile "notarytool-profile" --wait
+
+          echo "Attach staple"
+          xcrun stapler staple "target/release/osx/Alacritty.app"
       - name: Make DMG
         run: |
             ln -sf /Applications target/release/osx/Applications
