@@ -149,7 +149,7 @@ jobs:
 
           mv ./extra/logo/alacritty-term.svg ./Alacritty.svg
 
-          ./.github/workflows/upload_asset.sh "$binpath"
+          ./.github/workflows/upload_asset.sh "$binpath" $GITHUB_TOKEN
           ./.github/workflows/upload_asset.sh ./Alacritty.svg $GITHUB_TOKEN
           ./.github/workflows/upload_asset.sh ./alacritty.1.gz $GITHUB_TOKEN
           ./.github/workflows/upload_asset.sh ./alacritty-msg.1.gz $GITHUB_TOKEN
