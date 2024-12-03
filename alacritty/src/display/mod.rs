@@ -269,10 +269,10 @@ impl SizeInfo<f32> {
         padding_right: f32,
         padding_top: f32,
         padding_bottom: f32,
-        dynamic_padding: bool,
+        _dynamic_padding: bool,
     ) -> SizeInfo {
-        let mut padding_x = (padding_left + padding_right) / 2.;
-        let mut padding_y = (padding_top + padding_bottom) / 2.;
+        let padding_x = (padding_left + padding_right) / 2.; // TODO: Reintroduce dynamic padding.
+        let padding_y = (padding_top + padding_bottom) / 2.; // TODO: Reintroduce dynamic padding.
 
         // TODO: Reintroduce dynamic padding.
         // if dynamic_padding {
@@ -320,7 +320,7 @@ impl SizeInfo<f32> {
 
     /// Calculate padding to spread it evenly around the terminal content.
     #[inline]
-    fn dynamic_padding(padding: f32, dimension: f32, cell_dimension: f32) -> f32 {
+    fn _dynamic_padding(padding: f32, dimension: f32, cell_dimension: f32) -> f32 { // TODO: Reintroduce dynamic padding.
         padding + ((dimension - 2. * padding) % cell_dimension) / 2.
     }
 }
@@ -814,8 +814,6 @@ impl Display {
             },
         }
         terminal.reset_damage();
-
-        let graphics_queues = terminal.graphics_take_queues();
 
         let graphics_queues = terminal.graphics_take_queues();
 
