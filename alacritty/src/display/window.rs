@@ -30,7 +30,7 @@ use winit::dpi::{PhysicalPosition, PhysicalSize};
 use winit::event_loop::ActiveEventLoop;
 use winit::monitor::MonitorHandle;
 #[cfg(windows)]
-use winit::platform::windows::IconExtWindows;
+use winit::platform::windows::{IconExtWindows, WindowAttributesExtWindows};
 use winit::raw_window_handle::{HasWindowHandle, RawWindowHandle};
 use winit::window::{
     CursorIcon, Fullscreen, ImePurpose, Theme, UserAttentionType, Window as WinitWindow,
@@ -76,7 +76,7 @@ impl std::error::Error for Error {
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
-            Error::WindowCreation(err) => write!(f, "Error creating GL context; {}", err),
+            Error::WindowCreation(err) => write!(f, "Error creating GL context; {err}"),
             Error::Font(err) => err.fmt(f),
         }
     }
@@ -302,7 +302,8 @@ impl Window {
 
         WinitWindow::default_attributes()
             .with_decorations(window_config.decorations != Decorations::None)
-            .with_window_icon(icon.ok())
+            .with_window_icon(icon.as_ref().ok().cloned())
+            .with_taskbar_icon(icon.ok())
     }
 
     #[cfg(target_os = "macos")]
