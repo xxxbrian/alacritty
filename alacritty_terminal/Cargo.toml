@@ -1,6 +1,6 @@
 [package]
 name = "alacritty_terminal"
-version = "0.24.1-dev"
+version = "0.24.1"
 authors = ["Christian Duerr <contact@christianduerr.com>", "Joe Wilm <joe@jwilm.com>"]
 license = "Apache-2.0"
 description = "Library for writing terminal emulators"
@@ -8,7 +8,7 @@ readme = "../README.md"
 homepage = "https://alacritty.org"
 repository = "https://github.com/alacritty/alacritty"
 edition = "2021"
-rust-version = "1.70.0"
+rust-version = "1.74.0"
 
 [features]
 default = ["serde"]
